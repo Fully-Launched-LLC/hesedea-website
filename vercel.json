@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/hesedea-preview-blue.html", "destination": "/", "permanent": true }
+  ]
+}
