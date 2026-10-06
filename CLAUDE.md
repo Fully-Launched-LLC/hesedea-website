@@ -48,10 +48,8 @@ Hesedea website, a Fully Launched client site.
 
    Why: all product images (9 unique, 12 placements) are 420x525px at 4.5 to 8.2 KB. They'll look soft on retina screens and won't hold up on product detail pages.
 
-3. **Confirm team names and photos are real and approved** (Mark Johnson, Lucy Johnson, Victor Wilson, Amber Carter, Piper O'Quinn).
+   Hesedea supplied the photos, so the low resolution most likely came from compression when they were embedded in the single-file HTML, or from pulling web/Shopify thumbnails. Ask Elias where the originals are. If the products are in Hesedea's Shopify, the admin has full-res versions.
 
-   Why: if any are placeholders they need swapping before the site is public, and real people need to have agreed to be on the site.
-
-4. **Decide whether to split into multiple pages.**
+3. **Decide whether to split into multiple pages.**
 
    Why: depends on the open questions (page list, how Shopify fits in, who edits content). If the site stays one page, item 1 is still worth doing for speed; if it splits, item 1 should happen first.
