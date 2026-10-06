@@ -2440,11 +2440,21 @@ a:focus-visible, button:focus-visible, input:focus-visible{
     });
   }
 
-  // "Small / Black" -> "Small" (variant titles combine size + color; the
-  // color half is already fixed per card, so only show the size half)
-  function sizeLabel(variantTitle){
-    var parts = variantTitle.split("/");
-    return parts.length > 1 ? parts[0].trim() : variantTitle.trim();
+  // "black / s" -> "S", "Black/White / One Size" -> "One Size". Takes a
+  // variant (uses its "Size" option) or a variant title (uses the text
+  // after the last "/"). Letter sizes are uppercased; others kept as-is.
+  function sizeLabel(variant){
+    var size = null;
+    var options = typeof variant === "object" && variant ? variant.selectedOptions : null;
+    (options || []).forEach(function(o){
+      if(o.name && o.name.toLowerCase() === "size") size = o.value;
+    });
+    if(size === null){
+      var title = typeof variant === "string" ? variant : (variant && variant.title) || "";
+      size = title.slice(title.lastIndexOf("/") + 1);
+    }
+    size = size.trim();
+    return /^(x*[sml]|\d+x[sl])$/i.test(size) ? size.toUpperCase() : size;
   }
 
   function setupProductSlot(slot, config){
@@ -2460,7 +2470,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
       variants.forEach(function(v){
         var opt = document.createElement("option");
         opt.value = v.id;
-        opt.textContent = sizeLabel(v.title) + (v.available ? "" : " (Sold out)");
+        opt.textContent = sizeLabel(v) + (v.available ? "" : " (Sold out)");
         opt.disabled = !v.available;
         select.appendChild(opt);
       });
