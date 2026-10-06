@@ -33,3 +33,25 @@ Hesedea website, a Fully Launched client site.
 - Page list: TBD
 - How Shopify fits in: TBD
 - Who edits content after launch: TBD
+
+## To-do (check with Elias first, not started)
+
+1. **Extract the 23 base64 images into `/assets/images`** (17 unique files). Plan already worked out:
+   - Dedupe: the logo mark used 4 times, and the 3 products shown twice (off-black tee, maroon crewneck, rope cap).
+   - Keep existing alt text exactly; `initTeamGallery()` finds team photos by matching on it.
+   - Leave the 3 decorative logos (hero logo, 2 mark-panel logos) with `alt=""`.
+   - Add `width`/`height` to every img, and `loading="lazy"` on all except the hero logo.
+
+   Why: images are ~78% of the 520 KB HTML. Extracting drops `index.html` to ~110 KB, lets browsers cache images, and lets future pages share them instead of each one re-embedding the same data.
+
+2. **Get high-res product photos from Hesedea.** Ask for originals at 1200px+ on the long side.
+
+   Why: all product images (9 unique, 12 placements) are 420x525px at 4.5 to 8.2 KB. They'll look soft on retina screens and won't hold up on product detail pages.
+
+3. **Confirm team names and photos are real and approved** (Mark Johnson, Lucy Johnson, Victor Wilson, Amber Carter, Piper O'Quinn).
+
+   Why: if any are placeholders they need swapping before the site is public, and real people need to have agreed to be on the site.
+
+4. **Decide whether to split into multiple pages.**
+
+   Why: depends on the open questions (page list, how Shopify fits in, who edits content). If the site stays one page, item 1 is still worth doing for speed; if it splits, item 1 should happen first.
