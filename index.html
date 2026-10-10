@@ -310,6 +310,14 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   transition: color .2s;
 }
 .footer-col a:hover{ color: #fff; }
+.footer-col .contact-options{
+  margin: -4px 0 12px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,.25);
+}
+.footer-col .contact-options[hidden]{ display: none; }
+.footer-col .contact-options a{ color: rgba(255,255,255,.8); margin-bottom: 8px; }
+.footer-col .contact-options a:last-child{ margin-bottom: 0; }
 .footer-verse{ font-family: var(--font-display); font-style: italic; font-size: 14px; color: rgba(255,255,255,.7); line-height: 1.6; }
 .footer-bottom{
   display: flex;
@@ -2083,7 +2091,11 @@ a:focus-visible, button:focus-visible, input:focus-visible{
         <a href="#" data-nav="team">Our team</a>
         <a href="#" data-nav="about">About us</a>
         <a href="#" data-nav="mcf">Give back (Mully)</a>
-        <a href="mailto:info@hesedea.com">info@hesedea.com</a>
+        <a href="mailto:info@hesedea.com" id="contact-toggle" aria-expanded="false" aria-controls="contact-options">info@hesedea.com</a>
+        <div class="contact-options" id="contact-options" hidden>
+          <a href="mailto:info@hesedea.com">Open in Mail app</a>
+          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info@hesedea.com" target="_blank" rel="noopener">Open in Gmail</a>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -2129,10 +2141,27 @@ a:focus-visible, button:focus-visible, input:focus-visible{
     initTilt();
     initParallax();
     initTeamGallery();
+    initContactMenu();
     var startView = document.querySelector(".view.active");
     if(startView) startView.classList.add("view-in");
     requestAnimationFrame(function(){ document.body.classList.add("loaded"); });
   });
+
+  /* ---------------- footer contact: choose Mail app or Gmail ---------------- */
+  function initContactMenu(){
+    var toggle = document.getElementById("contact-toggle");
+    var panel = document.getElementById("contact-options");
+    if(!toggle || !panel) return;
+    function setOpen(open){
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    toggle.addEventListener("click", function(e){
+      e.preventDefault();
+      setOpen(panel.hidden);
+    });
+    document.addEventListener("keydown", function(e){ if(e.key === "Escape") setOpen(false); });
+  }
 
   /* ---------------- team gallery: clone real photos, jump to full bio ---------------- */
   function initTeamGallery(){
