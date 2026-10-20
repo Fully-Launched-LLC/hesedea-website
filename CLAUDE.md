@@ -23,6 +23,7 @@ Hesedea website, a Fully Launched client site.
 - Every page links to the shared stylesheet.
 - Nav links use root-relative paths (`/about`, not `about.html`).
 - After any push to `main`, confirm the Vercel production deploy is READY and that each page returns 200.
+- Before making any changes, run git pull on main. Other people push to this repo.
 
 ## Commits
 
