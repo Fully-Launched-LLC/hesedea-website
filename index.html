@@ -868,28 +868,6 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   line-height: 1.5;
   margin: 0;
 }
-.tagline-panel{
-  border: 1px solid var(--line);
-  padding: 30px;
-}
-.tagline-panel h4{
-  font-size: 11.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--slate);
-  margin: 0 0 18px;
-  font-weight: 600;
-}
-.tagline-panel ul{ list-style: none; margin: 0; padding: 0; }
-.tagline-panel li{
-  font-family: var(--font-display);
-  font-size: 15px;
-  color: var(--ink);
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-}
-.tagline-panel li:first-child{ border-top: none; padding-top: 0; }
-
 /* ---------- mission band (MCF) ---------- */
 .mission-band{
   background: var(--ink);
@@ -926,7 +904,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 @media (max-width: 900px){
   .story-layout, .story-layout.mcf-layout{ grid-template-columns: 1fr; gap: 40px; }
   .story-aside{ position: static; flex-direction: row; flex-wrap: wrap; }
-  .mark-panel, .tagline-panel{ flex: 1 1 260px; }
+  .mark-panel{ flex: 1 1 260px; }
   .mission-grid{ grid-template-columns: 1fr; }
 }
 /* ==========================================================================
@@ -1678,7 +1656,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
       <article class="story-copy">
         <p class="drop-cap reveal">At the heart of HESEDEA is the beautiful Hebrew word, Hesed, which is incorporated into a beautiful logo on our clothing items. The signature logo is designed to change your wardrobe and change the conversation. HESEDEA, intertwined with a bold cross and a circle, symbolizes how one act of Hesed spreads to another&hellip;and another&hellip;until it comes full circle.</p>
         <p class="reveal">Hesed is a word that God uses to describe himself: steadfast love, kindness, mercy and covenant faithfulness that never fails.</p>
-        <p class="verse-refs reveal">Hebrews 34:6&ndash;7 &middot; Psalm 136 &middot; Lamentations 3:22&ndash;23 &middot; Micah 7:18 &middot; Psalm 23:6</p>
+        <p class="verse-refs reveal">Exodus 34:6&ndash;7 &middot; Psalm 136 &middot; Lamentations 3:22&ndash;23 &middot; Micah 7:18 &middot; Psalm 23:6</p>
         <hr class="story-rule reveal">
         <p class="reveal">HESEDEA was born from a simple yet powerful truth: we are called to spread the word of what He Said through our clothing and apparel lines.</p>
         <p class="reveal">In a world full of noise, division and fleeting trends, we believe clothing can spark something deeper. Every item we create carries an invitation: to Change your Wardrobe and Change the Conversation.</p>
@@ -1688,16 +1666,6 @@ a:focus-visible, button:focus-visible, input:focus-visible{
         <div class="mark-panel">
           <img class="mark-panel-logo" src="data:image/png;base64,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" alt="">
           <p>Circle. Cross. One act of Hesed, passed on until it comes full circle.</p>
-        </div>
-        <div class="tagline-panel">
-          <h4>Potential taglines</h4>
-          <ul>
-            <li>HESEDEA &middot; Changing the Conversation</li>
-            <li>HESEDEA &middot; Showing His Light</li>
-            <li>HESEDEA &middot; Spreading Hesed</li>
-            <li>Wear Hesed. Spread Hesed.</li>
-            <li>Change your Wardrobe. Change the Conversation.</li>
-          </ul>
         </div>
       </aside>
     </div>
