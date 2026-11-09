@@ -13,7 +13,9 @@ Hesedea website, a Fully Launched client site.
 - `index.html` is the homepage.
 - New pages go in folders as `<page>/index.html` so URLs are clean (`/about`, `/contact`).
 - Shared CSS and JS go in `/assets`; images in `/assets/images`.
-- No base64-embedded images. (`index.html` still has 23 embedded images from the original preview file; extract them to `/assets/images` when asked.)
+- No base64-embedded images. All images are files in `/assets/images` (the 23 originally embedded ones were extracted, deduped to 17 files).
+- Global CSS rule `img{ height: auto }` is required because every `<img>` carries `width`/`height` attributes; without it the height attribute would override CSS sizing (e.g. `.team-photo img` aspect-ratio).
+- Team gallery (`initTeamGallery()`) clones team photos by matching alt text: don't change those alts.
 - `vercel.json` redirects the old `/hesedea-preview-blue.html` URL to `/`.
 - `.vercelignore` keeps this file out of the deployment.
 
@@ -37,13 +39,7 @@ Hesedea website, a Fully Launched client site.
 
 ## To-do (check with Elias first, not started)
 
-1. **Extract the 23 base64 images into `/assets/images`** (17 unique files). Plan already worked out:
-   - Dedupe: the logo mark used 4 times, and the 3 products shown twice (off-black tee, maroon crewneck, rope cap).
-   - Keep existing alt text exactly; `initTeamGallery()` finds team photos by matching on it.
-   - Leave the 3 decorative logos (hero logo, 2 mark-panel logos) with `alt=""`.
-   - Add `width`/`height` to every img, and `loading="lazy"` on all except the hero logo.
-
-   Why: images are ~78% of the 520 KB HTML. Extracting drops `index.html` to ~110 KB, lets browsers cache images, and lets future pages share them instead of each one re-embedding the same data.
+1. ~~Extract the 23 base64 images into `/assets/images`~~ Done: 17 files, `index.html` down from ~520 KB to ~100 KB, width/height on every img, `loading="lazy"` on all but the hero logo.
 
 2. **Get high-res product photos from Hesedea.** Ask for originals at 1200px+ on the long side.
 
