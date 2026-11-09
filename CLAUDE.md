@@ -10,7 +10,11 @@ Hesedea website, a Fully Launched client site.
 
 ## Structure
 
-- `index.html` is the homepage.
+- Pages: `index.html` (Home), `gear/`, `about/`, `mcf/`, `team/` (each `<page>/index.html`). Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
+- Header, footer and cart drawer markup is duplicated in every page (no build step). Change it in all 5 files and keep them identical.
+- Each page has its own title, meta description, canonical and OG tags. The Organization JSON-LD is on Home only. Add new pages to `sitemap.xml`.
+- `assets/styles.css` and `assets/site.js` are shared by all pages.
+- Shopify Buy SDK (in `site.js`) is live: it turns the static "Notify Me" buttons into Add to Cart with size pickers. The cart is a Shopify checkout whose id is kept in localStorage, so it persists across pages. Every page needs the cart drawer markup and `#cart-count`.
 - New pages go in folders as `<page>/index.html` so URLs are clean (`/about`, `/contact`).
 - Shared CSS and JS go in `/assets`; images in `/assets/images`.
 - No base64-embedded images. All images are files in `/assets/images` (the 23 originally embedded ones were extracted, deduped to 17 files).
@@ -47,6 +51,6 @@ Hesedea website, a Fully Launched client site.
 
    Hesedea supplied the photos, so the low resolution most likely came from compression when they were embedded in the single-file HTML, or from pulling web/Shopify thumbnails. Ask Elias where the originals are. If the products are in Hesedea's Shopify, the admin has full-res versions.
 
-3. **Decide whether to split into multiple pages.**
+3. ~~Decide whether to split into multiple pages.~~ Done: split into 5 pages.
 
    Why: depends on the open questions (page list, how Shopify fits in, who edits content). If the site stays one page, item 1 is still worth doing for speed; if it splits, item 1 should happen first.
