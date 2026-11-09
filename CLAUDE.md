@@ -10,7 +10,7 @@ Hesedea website, a Fully Launched client site.
 
 ## Structure
 
-- Pages: `home/`, `gear/`, `about/`, `mully/`, `team/` (each `<page>/index.html`). There is no root `index.html`: `vercel.json` redirects `/` to `/home` (temporary redirect, so it can be changed later) and the old `/mcf` URL to `/mully`. Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
+- Pages: `home/`, `shop/`, `about/`, `mully/`, `team/` (each `<page>/index.html`). There is no root `index.html`: `vercel.json` redirects `/` to `/home` (temporary redirect, so it can be changed later) and the old `/mcf` and `/gear` URLs to `/mully` and `/shop`. Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
 - Header, footer and cart drawer markup is duplicated in every page (no build step). Change it in all 5 files and keep them identical.
 - Each page has its own title, meta description, canonical and OG tags. The Organization JSON-LD is on Home only. Add new pages to `sitemap.xml`.
 - `assets/styles.css` and `assets/site.js` are shared by all pages.
