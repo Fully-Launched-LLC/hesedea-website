@@ -1,5 +1,8 @@
 {
   "redirects": [
-    { "source": "/hesedea-preview-blue.html", "destination": "/", "permanent": true }
+    { "source": "/", "destination": "/home", "permanent": false },
+    { "source": "/index.html", "destination": "/home", "permanent": true },
+    { "source": "/mcf", "destination": "/mully", "permanent": true },
+    { "source": "/hesedea-preview-blue.html", "destination": "/home", "permanent": true }
   ]
 }
