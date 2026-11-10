@@ -10,7 +10,7 @@ Hesedea website, a Fully Launched client site.
 
 ## Structure
 
-- Pages: `home/`, `shop/`, `about/`, `mully/`, `team/` (each `<page>/index.html`). There is no root `index.html`: `vercel.json` redirects `/` to `/home` (temporary redirect, so it can be changed later) and the old `/mcf` and `/gear` URLs to `/mully` and `/shop`. Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
+- Pages: `home/`, `shop/`, `about/`, `mully/`, `team/` (each `<page>/index.html`). There is no root `index.html`: `vercel.json` rewrites `/` to serve `home/index.html` (no redirect, so `hesedea.com` shows the homepage at the bare domain; needed for Google Search Console's HTML-tag verification, whose `google-site-verification` meta tag is in `home/index.html` and must stay). `vercel.json` redirects the old `/mcf` and `/gear` URLs to `/mully` and `/shop`. Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
 - Header, footer and cart drawer markup is duplicated in every page (no build step). Change it in every page (5 main pages + 9 product pages) and keep them identical.
 - Each page has its own title, meta description, canonical and OG tags. The Organization JSON-LD is on Home only. Add new pages to `sitemap.xml`.
 - `assets/styles.css` and `assets/site.js` are shared by all pages.
@@ -23,6 +23,7 @@ Hesedea website, a Fully Launched client site.
 - No base64-embedded images. All images are files in `/assets/images` (the 23 originally embedded ones were extracted, deduped to 17 files).
 - Global CSS rule `img{ height: auto }` is required because every `<img>` carries `width`/`height` attributes; without it the height attribute would override CSS sizing (e.g. `.team-photo img` aspect-ratio).
 - Team gallery (`initTeamGallery()`) clones team photos by matching alt text: don't change those alts.
+- `google6626213620253c95.html` at the root is an earlier Search Console verification file; leave it in place.
 - `vercel.json` also redirects the old `/hesedea-preview-blue.html` and `/index.html` URLs to `/home`.
 - `.vercelignore` keeps this file out of the deployment.
 
