@@ -15,6 +15,7 @@ Hesedea website, a Fully Launched client site.
 - Each page has its own title, meta description, canonical and OG tags. The Organization JSON-LD is on Home only. Add new pages to `sitemap.xml`.
 - `assets/styles.css` and `assets/site.js` are shared by all pages.
 - Shopify Buy SDK (in `site.js`) is live: it turns the static "Notify Me" buttons into Add to Cart with size pickers. The cart is a Shopify checkout whose id is kept in localStorage, so it persists across pages. Every page needs the cart drawer markup and `#cart-count`.
+- Product structured data (JSON-LD) for the Shop page is built at runtime in `site.js` (`recordProductSchema`) from the live Shopify variants, so price and stock in Google always match the page. It reads each card's `h3`, image and `.product-sub`, so keep that card markup.
 - New pages go in folders as `<page>/index.html` so URLs are clean (`/about`, `/contact`).
 - Shared CSS and JS go in `/assets`; images in `/assets/images`.
 - No base64-embedded images. All images are files in `/assets/images` (the 23 originally embedded ones were extracted, deduped to 17 files).

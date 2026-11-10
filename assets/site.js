@@ -300,6 +300,7 @@
       if(!variants.length) return; // couldn't resolve this color — leave "Notify Me"
 
       showShopifyPrice(slug, variants);
+      recordProductSchema(slot, variants);
 
       var btn = slot.querySelector("button");
       if(!btn) return;
@@ -344,6 +345,52 @@
     document.querySelectorAll('[data-shopify-price="' + slug + '"]').forEach(function(el){
       el.textContent = text;
     });
+  }
+
+  // Product structured data for Google, built from the same live Shopify
+  // data the cards show, so price and stock in search always match the page.
+  var productSchema = [];
+  function recordProductSchema(slot, variants){
+    var card = slot.closest(".product-card");
+    if(!card) return;
+    var nameEl = card.querySelector(".product-info h3");
+    var img = card.querySelector(".product-media img");
+    var sub = card.querySelector(".product-sub");
+    if(!nameEl || !img) return;
+
+    var available = variants.filter(function(v){ return v.available; });
+    var priced = available.length ? available : variants;
+    var amounts = priced.map(variantAmount).filter(function(n){ return !isNaN(n); });
+    if(!amounts.length) return;
+    var first = priced[0].price;
+    var currency = (first && typeof first === "object" && first.currencyCode) || "USD";
+
+    var item = {
+      "@type": "Product",
+      "name": nameEl.textContent.trim(),
+      "image": new URL(img.getAttribute("src"), location.origin).href,
+      "brand": { "@type": "Brand", "name": "Hesedea" },
+      "offers": {
+        "@type": "Offer",
+        "url": location.origin + location.pathname,
+        "price": Math.min.apply(null, amounts).toFixed(2),
+        "priceCurrency": currency,
+        "availability": available.length ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "itemCondition": "https://schema.org/NewCondition"
+      }
+    };
+    var desc = (img.getAttribute("alt") || "") + (sub ? ". " + sub.textContent.trim() : "");
+    if(desc) item.description = desc;
+    productSchema.push(item);
+
+    var tag = document.getElementById("product-jsonld");
+    if(!tag){
+      tag = document.createElement("script");
+      tag.type = "application/ld+json";
+      tag.id = "product-jsonld";
+      document.head.appendChild(tag);
+    }
+    tag.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": productSchema });
   }
 
   function variantAmount(variant){
