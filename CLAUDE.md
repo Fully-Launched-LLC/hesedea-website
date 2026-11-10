@@ -11,11 +11,13 @@ Hesedea website, a Fully Launched client site.
 ## Structure
 
 - Pages: `home/`, `shop/`, `about/`, `mully/`, `team/` (each `<page>/index.html`). There is no root `index.html`: `vercel.json` redirects `/` to `/home` (temporary redirect, so it can be changed later) and the old `/mcf` and `/gear` URLs to `/mully` and `/shop`. Split from the original single-file site; there is no JS view router any more, nav links are real URLs.
-- Header, footer and cart drawer markup is duplicated in every page (no build step). Change it in all 5 files and keep them identical.
+- Header, footer and cart drawer markup is duplicated in every page (no build step). Change it in every page (5 main pages + 9 product pages) and keep them identical.
 - Each page has its own title, meta description, canonical and OG tags. The Organization JSON-LD is on Home only. Add new pages to `sitemap.xml`.
 - `assets/styles.css` and `assets/site.js` are shared by all pages.
 - Shopify Buy SDK (in `site.js`) is live: it turns the static "Notify Me" buttons into Add to Cart with size pickers. The cart is a Shopify checkout whose id is kept in localStorage, so it persists across pages. Every page needs the cart drawer markup and `#cart-count`.
-- Product structured data (JSON-LD) for the Shop page is built at runtime in `site.js` (`recordProductSchema`) from the live Shopify variants, so price and stock in Google always match the page. It reads each card's `h3`, image and `.product-sub`, so keep that card markup.
+- Product pages: `shop/<slug>/index.html` for each of the 9 products (e.g. `/shop/off-black-tee`; the women's ivory tee is `/shop/womens-ivory-tee` but its Shopify key is `womens-bone-tee`). Shop and Home cards link to them. Each has its own title/description/canonical/OG, a BreadcrumbList JSON-LD, the buy slot, and 3 related cards. Add new products as a page plus a sitemap entry.
+- On product pages `site.js` (`enhanceProductDetail`) swaps in Shopify's own description (`descriptionHtml`) and full-size photos with thumbnails at runtime; the static description and local 420x525 photo are the fallback. Once the Shopify connector works, put the real descriptions and full-size photos into the HTML too, so Google sees them without JS.
+- Product structured data (JSON-LD) is built at runtime in `site.js` (`recordProductSchema`) on product pages only, from the live Shopify variants, so price and stock in Google always match the page. It reads the page's `h1`, main image, thumbnails and `[data-product-description]`.
 - New pages go in folders as `<page>/index.html` so URLs are clean (`/about`, `/contact`).
 - Shared CSS and JS go in `/assets`; images in `/assets/images`.
 - No base64-embedded images. All images are files in `/assets/images` (the 23 originally embedded ones were extracted, deduped to 17 files).
