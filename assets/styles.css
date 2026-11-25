@@ -268,6 +268,8 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   text-transform: uppercase;
   padding: 10px 20px;
 }
+.announce a{ color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.announce a:hover{ color: #fff; }
 
 /* ---------- footer ---------- */
 .site-footer{
@@ -716,6 +718,34 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 .page-hero .eyebrow{ display: block; margin-bottom: 20px; }
 .page-hero h1{ max-width: 16ch; margin-bottom: 20px; }
 .page-hero .lede{ max-width: 56ch; }
+
+/* ---------- Shopify-loaded images ----------
+   Apliiq/Shopify photos come in mixed shapes (2:3, square, landscape), so
+   inside the fixed 4:5 box they are fitted, not cropped. Multiply blends
+   their white backgrounds into the soft box colour. */
+.product-media img.shopify-img,
+.product-thumbs img.shopify-img{
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.product-media img.shopify-img{ padding: 6%; }
+.product-thumbs img.shopify-img{ padding: 4px; }
+
+/* golf cards: price under the title, color + size pickers */
+.product-info-stacked{ flex-direction: column; gap: 4px; }
+.color-select + .size-select{ margin-top: 0; }
+
+/* Consider (golf) grid: 4 across on wide screens */
+@media (min-width: 1200px){
+  .product-grid-golf{ grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
+  .product-grid-golf .product-card{ padding: 16px 16px 20px; }
+}
+
+/* ---------- CONSIDER (golf line) page ---------- */
+.consider-story{ max-width: 68ch; font-size: 17px; line-height: 1.8; color: var(--ink-70); }
+.consider-story p + p{ margin-top: 18px; }
+.consider-intro{ max-width: 60ch; }
+.consider-intro + .btn{ margin-top: 20px; }
 
 .shop-note{
   display: flex;
