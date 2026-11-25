@@ -735,11 +735,8 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 .product-info-stacked{ flex-direction: column; gap: 4px; }
 .color-select + .size-select{ margin-top: 0; }
 
-/* Consider (golf) grid: 4 across on wide screens */
-@media (min-width: 1200px){
-  .product-grid-golf{ grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
-  .product-grid-golf .product-card{ padding: 16px 16px 20px; }
-}
+/* Consider (golf) grid: uses the standard .product-grid columns
+   (3 across above 960px, so the 9 products sit 3x3) */
 
 /* ---------- CONSIDER (golf line) page ---------- */
 .consider-story{ max-width: 68ch; font-size: 17px; line-height: 1.8; color: var(--ink-70); }
