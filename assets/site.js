@@ -11,10 +11,131 @@
     initParallax();
     initTeamGallery();
     initContactMenu();
+    initAnnounce();
     var startView = document.querySelector(".view.active");
     if(startView) startView.classList.add("view-in");
     requestAnimationFrame(function(){ document.body.classList.add("loaded"); });
   });
+
+  /* ---------------- top banner: Black Friday code + Consider ----------------
+     Without JS the sale message shows as static text. With JS the two
+     messages crossfade every ~5s (paused on hover/focus). Reduced motion:
+     no rotation, sale message only. From SALE_ENDS on (when HESEDEA15 stops
+     working in Shopify) only the Consider message shows, with no redeploy. */
+  var SALE_ENDS = Date.parse("2026-12-16T05:00:00Z"); // Dec 15, 11:59pm Eastern
+  var ANNOUNCE_INTERVAL = 5000;
+
+  function initAnnounce(){
+    var banner = document.querySelector("[data-announce]");
+    if(!banner) return;
+    var sale = banner.querySelector('[data-announce-msg="sale"]');
+    var consider = banner.querySelector('[data-announce-msg="consider"]');
+    if(!sale || !consider) return;
+    var status = banner.querySelector("[data-announce-status]");
+
+    function saleOver(){ return Date.now() >= SALE_ENDS; }
+
+    // Only one message is ever visible, focusable or read out.
+    function show(msg){
+      [sale, consider].forEach(function(m){
+        if(!m.parentNode) return;
+        var on = m === msg;
+        // Crossfading keeps both in place; otherwise hide the other outright
+        m.hidden = !on && !banner.classList.contains("is-rotating");
+        m.classList.toggle("is-active", on);
+        m.setAttribute("aria-hidden", on ? "false" : "true");
+        if(on) m.removeAttribute("inert"); else m.setAttribute("inert", "");
+      });
+    }
+
+    function endSale(){
+      stop();
+      if(sale.parentNode) sale.parentNode.removeChild(sale);
+      banner.classList.remove("is-rotating");
+      consider.hidden = false;
+      consider.classList.add("is-active");
+      consider.removeAttribute("aria-hidden");
+      consider.removeAttribute("inert");
+    }
+
+    if(saleOver()){ endSale(); return; }
+
+    // Upgrade the static code to a copy button
+    var codeEl = sale.querySelector("[data-copy-code]");
+    if(codeEl){
+      var code = codeEl.getAttribute("data-copy-code");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "announce-code";
+      btn.textContent = code;
+      btn.setAttribute("aria-label", "Copy discount code " + code);
+      btn.title = "Tap to copy";
+      codeEl.parentNode.replaceChild(btn, codeEl);
+      var copiedTimer = null;
+      btn.addEventListener("click", function(){
+        copyText(code).then(function(){
+          btn.classList.add("is-copied");
+          if(status) status.textContent = "Code " + code + " copied";
+          clearTimeout(copiedTimer);
+          copiedTimer = setTimeout(function(){
+            btn.classList.remove("is-copied");
+            if(status) status.textContent = "";
+          }, 1600);
+        }).catch(function(){});
+      });
+    }
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var timer = null;
+    var paused = false;
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+    if(reduced){
+      // No animation: the sale message until it ends, then Consider.
+      show(sale);
+      var left = SALE_ENDS - Date.now();
+      if(left < 2147483647) setTimeout(endSale, left);
+      return;
+    }
+
+    banner.classList.add("is-rotating");
+    show(sale);
+    var current = sale;
+    timer = setInterval(function(){
+      if(saleOver()){ endSale(); return; }
+      if(paused || document.hidden) return;
+      current = current === sale ? consider : sale;
+      show(current);
+    }, ANNOUNCE_INTERVAL);
+
+    var hovering = false, focused = false;
+    function sync(){ paused = hovering || focused; }
+    banner.addEventListener("mouseenter", function(){ hovering = true; sync(); });
+    banner.addEventListener("mouseleave", function(){ hovering = false; sync(); });
+    banner.addEventListener("focusin", function(){ focused = true; sync(); });
+    banner.addEventListener("focusout", function(e){
+      if(!banner.contains(e.relatedTarget)){ focused = false; sync(); }
+    });
+  }
+
+  function copyText(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(resolve, reject){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(e){}
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error("copy failed"));
+    });
+  }
 
   /* ---------------- footer contact: choose Mail app or Gmail ---------------- */
   function initContactMenu(){

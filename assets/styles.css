@@ -266,10 +266,81 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   font-size: 12px;
   letter-spacing: .09em;
   text-transform: uppercase;
-  padding: 10px 20px;
+  /* fixed height: rotating messages never shift the layout */
+  position: relative;
+  height: 38px;
+  line-height: 18px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 .announce a{ color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .announce a:hover{ color: #fff; }
+.announce-msg{ max-width: 100%; }
+.announce-line{
+  display: block;
+  padding: 4px 4px; /* room for the code's focus ring inside overflow:hidden */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* JS on: both messages share one spot and crossfade */
+.announce.is-rotating .announce-msg{
+  position: absolute;
+  inset: 0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .8s ease, visibility 0s linear .8s;
+}
+.announce.is-rotating .announce-msg.is-active{
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .8s ease, visibility 0s;
+}
+.announce-code{
+  position: relative;
+  display: inline-block;
+  margin: 0 2px 0 6px;
+  padding: 1px 9px;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 14px;
+  color: #fff;
+  background: rgba(255,255,255,.14);
+  border: 1px dashed rgba(255,255,255,.55);
+  border-radius: 999px;
+  vertical-align: baseline;
+}
+button.announce-code{ cursor: pointer; text-transform: inherit; }
+button.announce-code:hover{ background: rgba(255,255,255,.24); }
+button.announce-code:focus-visible{ outline: 2px solid #fff; outline-offset: 2px; }
+.announce-code.is-copied::after{
+  content: "Copied";
+  position: absolute;
+  inset: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+}
+.announce-narrow{ display: none; }
+@media (max-width: 720px){
+  .announce-wide{ display: none; }
+  .announce-narrow{ display: inline; }
+}
+.announce-status{
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 /* ---------- footer ---------- */
 .site-footer{
